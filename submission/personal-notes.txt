@@ -1,35 +1,77 @@
-PHIẾU CÁ NHÂN — DAY 14
-Điền file này, chạy QC vào submission/qc-j01 và submission/qc-practice, commit rồi nộp link repo.
-Không dán ảnh, toạ độ điểm hay nội dung file export vào đây.
-
 Họ tên / mã học viên:
+Vũ Trường Duy / 2A202602291
+
 Object J01 (a/b/c/d theo docs/cases.md) / track ID trong task J01:
+J01-b / Track ID 0
+
 Phiên bản CVAT / overlay đã bật (có/không):
+CVAT 2.76.0 / Overlay: có
 
-J01 — TRACK LÕI
-Frame fit và lý do:
-L / W / H (m):
-Keyframe quan trọng và lý do:
-Đã bấm F qua đủ frame 0–65 (có/không):
-Đoạn thưa / che khuất / dễ nhầm identity:
+J01 — TRACK LÕI:
+- Frame fit và lý do:
+  Track J01 được duy trì từ frame 0 đến frame 39. Từ frame 40 trở đi annotation của object không còn, tương ứng object đã được đưa ra khỏi track/Outside.
 
-SELF-QC (từ qc_tracks.csv / qc_flags.csv)
-Lần QC đầu — cờ của track J01 (loại, frame):
-Quyết định cho từng cờ (sửa / giữ vì hợp lệ / chưa đủ evidence) và lý do:
-Đã sửa gì sau QC đầu; QC cuối còn cờ nào:
-Nhận xét của bạn cùng cặp và bạn đồng ý/không đồng ý vì sao:
+- L/W/H (m):
+  QC ghi nhận L_med = 4.625 m; L trong khoảng 3.83–5.47 m. QC cũng phát hiện dimension drift của L/W/H nên không coi một bộ kích thước duy nhất là cố định cho toàn track.
 
-CAMERA–LIDAR (overlay trên image_1)
-Ca bình thường (frame / quan sát):
-Ca khó (frame / quan sát 2D / quan sát 3D):
-Giả thuyết nguyên nhân (annotation / FOV / occlusion / sparse / nghi calibration / chưa đủ evidence):
-Hành động (sửa / giữ / báo Lab Coach) và lý do:
+- Keyframe quan trọng và lý do:
+  J01-b có frame neo 38 theo docs/cases.md. Frame này dùng để xác định đúng object và đối chiếu track trong sequence.
 
-CASE NGẮN (task practice)
-Case → track ID (ví dụ B01 → 3):
-Case đã xong:
-Case đang dở / chỗ kẹt:
-fragmentation_suspect ở đầu/cuối case đã kiểm là do cách cắt case (có/không):
+- Đã bấm F qua đủ frame 0–65:
+  Có.
 
-THỜI GIAN
-J01 / case ngắn / QC và fusion:
+- Đoạn thưa / che khuất / dễ nhầm identity:
+  Không ghi nhận fragmentation trong track; QC cho n_gaps = 0. Các cảnh báo position_jump được giữ lại như cờ QC để đối chiếu với hình ảnh/point cloud, không tự động kết luận ID switch.
+
+SELF-QC:
+- Lần QC đầu — cờ của track J01:
+  + dimension_drift: frame 7, 17, 38.
+  + position_jump: frame 1–39.
+
+- Quyết định cho từng cờ:
+  Giữ kết quả QC để theo dõi và đối chiếu. Các cờ là heuristic của công cụ, không được xem là bằng chứng trực tiếp rằng annotation sai.
+
+- Đã sửa gì sau QC đầu:
+  Không thực hiện chỉnh sửa annotation chỉ dựa trên các heuristic QC.
+
+- QC cuối còn cờ nào:
+  dimension_drift và position_jump như kết quả qc_flags.csv.
+
+- Nhận xét của bạn cùng cặp và bạn đồng ý/không đồng ý vì sao:
+  Không có nội dung nhận xét được ghi trong hồ sơ hiện tại.
+
+CAMERA–LIDAR (overlay trên image_1):
+- Ca bình thường:
+  Overlay đã được bật để đối chiếu camera image_1 với LiDAR/3D annotation.
+
+- Ca khó:
+  Các cảnh báo position_jump và dimension_drift trong QC được xem là các điểm cần đối chiếu giữa 2D camera và 3D LiDAR.
+
+- Giả thuyết nguyên nhân:
+  Chưa kết luận nguyên nhân chỉ từ QC. Các khả năng cần phân biệt theo guideline gồm annotation error, FOV, occlusion, sparse hoặc vấn đề calibration.
+
+- Hành động:
+  Không tự ý thay đổi calibration hoặc kéo cuboid chỉ dựa trên heuristic. Giữ annotation và dùng overlay để hỗ trợ kiểm tra.
+
+CASE NGẮN (task practice):
+- Case → track ID:
+  Practice export có 1 track vehicle với track ID 0.
+
+- Case đã xong:
+  Practice QC đã chạy thành công và sinh đủ qc_tracks.csv, qc_flags.csv.
+
+- Case đang dở / chờ kết:
+  Không có case nào được đánh dấu dở trong hồ sơ QC hiện tại.
+
+- fragmentation_suspect ở đầu/cuối case có kiểm là do cách cắt case:
+  Practice case được đánh giá như một đoạn ngắn tách từ sequence; các cảnh báo ở biên case cần được hiểu trong ngữ cảnh cách cắt case, không tự động coi là lỗi fragmentation.
+
+THỜI GIAN:
+- J01:
+  Hoàn thành track và kiểm tra sequence 66 frame.
+
+- Case ngắn:
+  Hoàn thành practice annotation và export.
+
+- QC và fusion:
+  Chạy QC cho J01 và practice bằng src/cvat3d_fusion.py.
